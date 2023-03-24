@@ -1,0 +1,83 @@
+
+::placeholder{
+    color: #000;
+    opacity: 0.3;
+    font-style: italic;
+}
+.add-container{
+    width: 100%;
+    height: 85vh;
+    font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.add-card{
+    width: 50%;
+    height: 500px;
+    box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.26);
+    perspective: 1000px;
+}
+.profile-picture, .radio, .location, .buttons{
+    padding: 15px;
+}
+.profile-picture img{
+    margin-left: 150px;
+    height: 200px;
+    width: 200px;
+    border-radius: 20%;
+    border: 3px solid #000;
+}
+.profile-picture p{
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #000;
+}
+.location input{
+    border: none;
+    outline: none;
+    background: none;
+    border-bottom: 1px solid rgb(4, 0, 255);
+    color: #187652;
+}
+.location p, .radio p {
+    margin-bottom: 10px;
+    color: #000;
+    font-size: 20px;
+}
+table{
+    width: 100%;
+}
+.data{
+    color: #40c290;
+    text-align: center;
+}
+.format{
+    color: #000;
+    font-size: large;
+    text-align: center;
+}
+.buttons{
+    margin-left: 180px;
+}
+.cancel{
+    color: rgb(243, 89, 89);
+    margin-right: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.cancel a{
+    color: red;
+    text-decoration: none;
+}
+.save{
+    color: rgb(60, 22, 212);
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+label{
+    font-size: large;
+    color: #40c290;
+}

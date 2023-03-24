@@ -1,0 +1,55 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="add-container">
+    <div class="add-card">
+        <form action="/update_product/{{product.id}}" method="post", enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile-picture">
+                <img src="{{ product.imageURL }}">
+                <input type="file" class="custom_file_input" accept="image/*" name="product_image">
+            </div>
+            <table>
+                <tr class="format">
+                    <td>Product Name:</td>
+                    <td>Product Price:</td>
+                </tr>
+                <tr class="data">
+                    <td>
+                        <div class="location">
+                            <input type="text" name="updated-name" value="{{product.name}}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="location">
+                            <input type="number" name="updated-price" min="1" max="100000000" step="0.01" value="{{product.price}}">
+                        </div>
+                    </td>
+                </tr>
+                <tr class="format">
+                    <td>Product State:</td>
+                    <td>Product Owner:</td>
+                </tr>
+                <tr class="data">
+                    {% if product.digital != True %}
+                    <td>Physical
+                        <input type="radio" name="digital" value="True" required>make digital<br>
+                        <input type="radio" name="digital" value="False"> don't change
+                    </td>
+                    {% else %}
+                    <td>Digital
+                        <input type="radio" name="digital" value="False" required > make physical<br>
+                        <input type="radio" name="digital" value="True"> don't change
+                    </td>
+                    {% endif %}
+                    <td>{{product.owner}}</td>
+                </tr>
+            </table>
+            <div class="buttons">
+                <button  class="cancel"><i class="fa-solid fa-ban"></i><a href="/shop"> Cancel</a></button>
+                <button class="save" type="submit"><i class="fa-solid fa-cloud-arrow-up"></i> Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content%}

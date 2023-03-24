@@ -1,0 +1,37 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="add-container">
+    <div class="add-card">
+            <div class="profile-picture">
+                <img src="{{ product.imageURL }}">
+            </div>
+            <table>
+                <tr class="format">
+                    <td>Product Name:</td>
+                    <td>Product Price:</td>
+                </tr>
+                <tr class="data">
+                    <td>{{product.name}}</td>
+                    <td>Rs. {{product.price}}</td>
+                </tr>
+                <tr class="format">
+                    <td>Product State:</td>
+                    <td>Product Owner:</td>
+                </tr>
+                <tr class="data">
+                    {% if product.digital != True %}
+                    <td>Physical</td>
+                    {% else %}
+                    <td>Digital</td>
+                    {% endif %}
+                    <td>{{product.owner}}</td>
+                </tr>
+            </table>
+            <div class="buttons">
+                <button  class="cancel"><i class="fa-solid fa-ban"></i><a href="/"> Cancel</a></button>
+                <button class="save update-cart" data-product={{product.id}} data-action= "add"><i class="fa-solid fa-cloud-arrow-up"></i> add to cart</button>
+            </div>
+    </div>
+</div>
+{% endblock content%}
