@@ -52,8 +52,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product= serializers.HyperlinkedRelatedField(many= False, view_name='product-detail', read_only= True)
-    order= serializers.HyperlinkedRelatedField(many= False, view_name='order-detail', read_only= True)
+    product= serializers.HyperlinkedRelatedField(many= True, view_name='product-detail', read_only= True)
+    order= serializers.HyperlinkedRelatedField(many= True, view_name='order-detail', read_only= True)
     class Meta:
         model= orderItems
         fields=[
@@ -64,8 +64,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
         ]
 
 class ShippingSerializer(serializers.ModelSerializer):
-    customer= serializers.HyperlinkedRelatedField(many= False, view_name='customer-detail', read_only=True)
-    order= serializers.HyperlinkedRelatedField(many=False, view_name='order-detail', read_only=True)
+    customer= serializers.HyperlinkedRelatedField(many= True, view_name='customer-detail', read_only=True)
+    order= serializers.HyperlinkedRelatedField(many=True, view_name='order-detail', read_only=True)
     class Meta:
         model= shippingAddress
         fields= [
