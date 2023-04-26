@@ -1,9 +1,13 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status, generics
 from django.contrib.auth.models import User
 from . import serializers
 from mainbox.models import product, customer, order, orderItems, shippingAddress
 from rest_framework import permissions
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
+from django.contrib.auth import authenticate, login
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 ###simple jwt#####
@@ -27,12 +31,49 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class= MyTokenObtainPairSerializer
 
-
+# def get_tokens_for_user(user):
+#   refresh = RefreshToken.for_user(user)
+#   return {
+#       'refresh': str(refresh),
+#       'access': str(refresh.access_token),
+#   }
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset= User.objects.all()
     serializer_class= serializers.UserSerializer
+
+class UserRegistrationViewSet(viewsets.ViewSet):
+    queryset= User.objects.all()
+    serializer_class= serializers.UserRegisterSerializer
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+    
+
+class UserLoginViewSet(viewsets.ModelViewSet):
+    queryset= User.objects.all()
+    serializer_class= serializers.UserLoginSerializer
+    permission_classes= [AllowAny]
+
+    def list(self, request, *args, **kwargs):
+        return Response({"error":"login_required"})
+    
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            return Response({'error': 'Invalid username/password'}, status=status.HTTP_400_BAD_REQUEST)
+
+        login(request, user)
+        return Response({'msg': 'Login Success', 'user': user.username}, status=status.HTTP_200_OK)
 
 class CustomerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset= customer.objects.all()
