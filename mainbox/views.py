@@ -48,7 +48,7 @@ def updateItem(request):
     productId= data['productId']
     action= data['action']
 
-    customer_ins = customer.objects.get(name= request.user)
+    customer_ins = customer.objects.get(user= request.user)
     products= product.objects.get(id= productId)
 
     orders, created= order.objects.get_or_create(customer= customer_ins, complete= False)
@@ -95,7 +95,7 @@ def processOrder(request):
 
     if request.user.is_authenticated:
         Customer= request.user
-        Customer= customer.objects.get(name= Customer)
+        Customer= customer.objects.get(user= Customer)
         orders, created= order.objects.get_or_create(customer= Customer, complete= False)
 
 
@@ -115,8 +115,11 @@ def processOrder(request):
         
     total= float(data['form']['total'])
     orders.transaction_id= transaction_id
-    if total== orders.get_cart_total:
+    if total == float(orders.get_cart_total):
         orders.complete= True
+        # orders.save()
+    # dd(orders)
+    # orders.complete= True
     orders.save();
 
     return JsonResponse('Payment submitted', safe=False)
