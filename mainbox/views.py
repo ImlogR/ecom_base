@@ -48,10 +48,10 @@ def updateItem(request):
     productId= data['productId']
     action= data['action']
 
-    customer = request.user.user_name
+    customer_ins = customer.objects.get(name= request.user)
     products= product.objects.get(id= productId)
 
-    orders, created= order.objects.get_or_create(customer= customer, complete= False)
+    orders, created= order.objects.get_or_create(customer= customer_ins, complete= False)
     orderItem, created= orderItems.objects.get_or_create(order= orders, product= products)
 
     if action == 'add':
@@ -94,7 +94,8 @@ def processOrder(request):
     data= json.loads(request.body)
 
     if request.user.is_authenticated:
-        Customer= request.user.user_name
+        Customer= request.user
+        Customer= customer.objects.get(name= Customer)
         orders, created= order.objects.get_or_create(customer= Customer, complete= False)
 
 

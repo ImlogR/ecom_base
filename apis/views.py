@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from mainbox.models import customer
+
 
 ###simple jwt#####
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -39,18 +41,24 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #   }
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset= User.objects.all()
     serializer_class= serializers.UserSerializer
 
 class UserRegistrationViewSet(viewsets.ViewSet):
     queryset= User.objects.all()
-    serializer_class= serializers.UserRegisterSerializer
+    serializer_class= serializers.UserRegistrationSerializer
+
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
+        new_customer= customer.objects.create(user= user,name= user.username, email= user.email)
+        new_customer.save()
         return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
     
 
