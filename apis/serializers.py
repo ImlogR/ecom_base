@@ -3,7 +3,7 @@ from mainbox.models import product, customer, order, orderItems, shippingAddress
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     # products= serializers.HyperlinkedRelatedField(many= True, view_name='product-detail', read_only= True)
     class Meta:
         model= User
@@ -12,7 +12,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'username',
         ]
-class UserRegisterSerializer(serializers.ModelSerializer):
+class UserRegistrationSerializer(serializers.ModelSerializer):
     password2= serializers.CharField(style={'input_type': 'password'}, write_only=True, required= True)
 
     class Meta:
@@ -114,5 +114,3 @@ class ShippingSerializer(serializers.ModelSerializer):
             'zipcode',
             'date_added'
         ]
-
-
