@@ -117,9 +117,6 @@ def processOrder(request):
     orders.transaction_id= transaction_id
     if total == float(orders.get_cart_total):
         orders.complete= True
-        # orders.save()
-    # dd(orders)
-    # orders.complete= True
     orders.save();
 
     return JsonResponse('Payment submitted', safe=False)
